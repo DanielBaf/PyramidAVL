@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Application.Web;
 
 import Application.Web.Actions.GameStarter;
@@ -26,7 +21,8 @@ public class Game {
         log.info("Starting game...");
         // create object and return result
         GameStarter game = new GameStarter();
-        return text;
+        //return text + "\n\n" + game.create();
+        return game.create();
     }
 
     @GetMapping("/Game/add")

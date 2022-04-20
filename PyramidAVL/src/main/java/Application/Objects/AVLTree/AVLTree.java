@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Application.Objects.AVLTree;
 
-import Application.Objects.Cards.PokerCard;
+import java.util.ArrayList;
+import java.util.Collections;
 import lombok.Data;
 
 /**
@@ -13,65 +9,99 @@ import lombok.Data;
  * @author jefemayoneso
  */
 @Data
-public class AVLTree {
+public class AVLTree<T> {
 
-    private AVLNode root;// main node
+    private AVLNode<T> root;
 
-    // search
-    public AVLNode search(PokerCard data, AVLNode toFind) {
+    public AVLTree() {
+        this.root = null;
+    }
+
+    /**
+     * Search a node into an AVL tree
+     *
+     * @param data
+     * @param value
+     * @param toFind
+     * @return
+     */
+    public AVLNode<T> search(T data, int value, AVLNode<T> toFind) {
         if (toFind == null) {
             return null;
-        } else if (toFind.getData().equals(data)) {
+        } else if (toFind.getValue() == value) { // TODO create method to find by data
             return toFind;
-        } else if (toFind.getData().getValue() < data.getValue()) {
-            return search(data, toFind.getRightChild());
+        } else if (toFind.getValue() < value) {
+            return search(data, value, toFind.getRightChild());
         } else {
-            return search(data, toFind.getRightChild());
+            return search(data, value, toFind.getLeftChild());
         }
     }
 
-    // get equilibrium factor
-    public int getEF(AVLNode node) {
+    /**
+     * Flip values from a tree to balance a tree
+     *
+     * @param node
+     * @param flipType
+     * @return
+     */
+    public AVLNode<T> flip(AVLNode<T> node, int flipType) {
+        AVLTreeFlipper<T> flipper = new AVLTreeFlipper<>();
+        switch (flipType) {
+            case 1:
+                return flipper.flipLeft(node);
+            case 2:
+                return flipper.flipRight(node);
+            case 3:
+                return flipper.doubleFlipLeft(node);
+            default:
+                return flipper.doubleFlipRight(node);
+        }
+    }
+
+    /**
+     * Insert a node into an AVL tree
+     */
+    public void insert(int value, T data) {
+        AVLNode<T> newNode = new AVLNode<>(data, value);
+        if (this.root == null) {
+            this.root = newNode;
+        } else {
+            this.root = new AVLTreeInserter<T>().insert(newNode, this.root);
+        }
+    }
+
+    public String print(int type) {
+        String result = "";
+        ArrayList<String> data = new ArrayList<>();
+        AVLTreePrinter<T> printer = new AVLTreePrinter<>();
+        switch (type) {
+            case 1:
+                printer.inOrder(this.root, data);
+            case 2:
+                printer.preOrder(this.root, data);
+            default:
+                printer.preOrder(this.root, data);
+        }
+        // check array and remove nulls
+        data.removeAll(Collections.singleton(null));
+        if (!data.isEmpty()) {
+            System.out.println("SIZE: " + data.size());
+            result = data.stream().map(line -> "<br>" + line).reduce(result, String::concat);
+        }
+        return result;
+    }
+
+    /**
+     * get the Equilibrium factor of a tree
+     *
+     * @param node
+     * @return
+     */
+    public int getEF(AVLNode<T> node) {
         if (node == null) {
             return -1;
         } else {
             return node.getEquilibriumFactor();
         }
-    }
-
-    // simple rotation left
-    public AVLNode flipLeft(AVLNode node) {
-        AVLNode aux = node.getLeftChild(); // data recover
-        node.setLeftChild(aux.getRightChild());
-        aux.setRightChild(node); // switch
-        node.setEquilibriumFactor(Math.max(getEF(node.getLeftChild()), getEF(node.getRightChild())) + 1); // update equilibrium factor
-        aux.setEquilibriumFactor(Math.max(getEF(aux.getLeftChild()), getEF(aux.getRightChild())) + 1); // update equilibrium factor
-        return aux; // return switched value
-    }
-
-    // simple rotation right
-    public AVLNode flipRight(AVLNode node) {
-        AVLNode aux = node.getRightChild(); // data recover
-        node.setRightChild(aux.getLeftChild());
-        aux.setLeftChild(node); // switch
-        node.setEquilibriumFactor(Math.max(getEF(node.getLeftChild()), getEF(node.getRightChild())) + 1); // update equilibrium factor
-        aux.setEquilibriumFactor(Math.max(getEF(aux.getLeftChild()), getEF(aux.getRightChild())) + 1); // update equilibrium factor
-        return aux; // return switched value
-    }
-
-    // double rotation left
-    public AVLNode doubleFlipLeft(AVLNode node) {
-        AVLNode aux;
-        node.setLeftChild(flipRight(node.getLeftChild())); // flip with previous method
-        aux = flipRight(node);
-        return aux;
-    }
-
-    // double rotation right
-    public AVLNode doubleFlipRight(AVLNode node) {
-        AVLNode aux;
-        node.setRightChild(flipLeft(node.getRightChild()));
-        aux = flipLeft(node);
-        return aux;
     }
 }
