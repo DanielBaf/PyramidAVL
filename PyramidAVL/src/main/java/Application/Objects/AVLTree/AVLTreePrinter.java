@@ -8,50 +8,76 @@ import java.util.ArrayList;
  */
 public class AVLTreePrinter<T> {
 
-    public String getData(int type, AVLNode<T> root) {
-        String result = "";
+    /**
+     * Public method to get the tree info as string
+     *
+     * @param type 1 = inorder, 2 = preorder, other = postorder
+     * @param root where to start printing
+     * @return
+     */
+    public String print(int type, AVLNode<T> root) {
         ArrayList<String> lines = new ArrayList<>();
-        switch (type) {
-            case 0:
-                inOrden(root, lines);
-                break;
-            case 1:
-                preorden(root, lines);
-                break;
-            default:
-                postOrden(root, lines);
+        String result = "";
+        try {
+
+            switch (type) {
+                case 0:
+                    lines.add("<br> ---- INORDERD ----");
+                    inOrden(root, lines);
+                    break;
+                case 1:
+                    lines.add("<br>---- PREORDER ----");
+                    preorden(root, lines);
+                    break;
+                default:
+                    lines.add("<br>---- POSTORDER ----");
+                    postOrden(root, lines);
+            }
+            // merge array result
+            result = lines.stream().map(line -> "<br>" + line).reduce(result, String::concat);
+        } catch (Exception e) {
+            System.out.println("ERROR printing tree: " + e.getMessage());
         }
-        // cast lines to single string
-        // return lines.stream().map(line -> "<br>" + line).reduce(result, String::concat);
         return result;
     }
 
-    //recorridos
-    //recorrer in orden
+    /**
+     * Print all the tree with in order
+     *
+     * @param current
+     */
     private void inOrden(AVLNode<T> current, ArrayList<String> lines) {
         if (current != null) {
             inOrden(current.getLeftChild(), lines);
-            lines.add("I: " + current.getValue() + " D: " + current.getData().toString());
-            System.out.println("I: " + current.getValue() + " D: " + current.getData().toString());
+            lines.add("NODE:<br>   Index=" + current.getValue() + " ef=" + current.getEf() + "   data=" + current.getData().toString() + "<br>   children=[<br>   " + current.getLeftChild() + "<br>   " + current.getRightChild() + " ]<br><br>");
             inOrden(current.getRightChild(), lines);
         }
     }
 
-    //recorrer en preorden
+    /**
+     * Print all the tree with pre order
+     *
+     * @param current
+     */
     private void preorden(AVLNode<T> current, ArrayList<String> lines) {
         if (current != null) {
-            lines.add("I: " + current.getValue() + " D: " + current.getData().toString());
+            lines.add("NODE:<br>   Index=" + current.getValue() + " ef=" + current.getEf() + "   data=" + current.getData().toString() + "<br>   children=[<br>   " + current.getLeftChild() + "<br>   " + current.getRightChild() + " ]<br><br>");
             preorden(current.getLeftChild(), lines);
             preorden(current.getRightChild(), lines);
         }
     }
 
-    //recorrer postorden
+    /**
+     * Print all the tree with post order
+     *
+     * @param current
+     */
     private void postOrden(AVLNode<T> current, ArrayList<String> lines) {
         if (current != null) {
             postOrden(current.getLeftChild(), lines);
             postOrden(current.getRightChild(), lines);
-            lines.add("I: " + current.getValue() + " D: " + current.getData().toString());
+            lines.add("NODE:<br>   Index=" + current.getValue() + " ef=" + current.getEf() + "   data=" + current.getData().toString() + "<br>   children=[<br>   " + current.getLeftChild() + "<br>   " + current.getRightChild() + " ]<br><br>");
         }
     }
+
 }

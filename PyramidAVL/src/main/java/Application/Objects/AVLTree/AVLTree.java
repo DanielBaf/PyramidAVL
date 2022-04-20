@@ -1,18 +1,20 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Application.Objects.AVLTree;
 
 import lombok.Data;
 
 /**
- * This is the master class, used to validate actions from an AVL tree
  *
  * @author jefemayoneso
  */
 @Data
 public class AVLTree<T> {
 
-    private AVLNode<T> root;
-    private AVLTreeInserter<T> inserter;
-    private AVLTreePrinter<T> printer;
+    AVLNode<T> root;
 
     public AVLTree() {
         this.root = null;
@@ -26,37 +28,26 @@ public class AVLTree<T> {
      * @return
      */
     public AVLNode<T> search(int value, AVLNode<T> node) {
-        if (root == null) {
+        if (this.root == null) {
             return null;
         } else if (node.getValue() == value) {
             return node;
         } else if (node.getValue() < value) {
             return search(value, node.getRightChild());
         } else {
-            return search(value, node.getRightChild());
+            return search(value, node.getLeftChild());
         }
     }
 
     public void insert(int value, T data) {
-        AVLNode<T> newNode = new AVLNode<>(value, data);
-        if (this.root == null) {
-            this.root = newNode;
-        } else {
-            this.root = this.inserter.insertAVL(newNode, root);
-        }
+        AVLTreeInserter<T> inserter = new AVLTreeInserter<>();
+        AVLNode<T> toInsert = new AVLNode<>(value, data);
+        this.root = inserter.insert(toInsert, this.root);
     }
 
-    public String getPrint(int type) {
-        this.printer.getData(type, this.root);
-        return "hola";
+    public String print(int type) {
+        AVLTreePrinter<T> printer = new AVLTreePrinter<>();
+        return printer.print(type, this.root);
     }
 
-    /**
-     * CHeck if a tree is empty
-     *
-     * @return
-     */
-    public boolean isEmpty() {
-        return root == null;
-    }
 }
