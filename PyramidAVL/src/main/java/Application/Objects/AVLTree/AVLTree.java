@@ -1,10 +1,9 @@
 package Application.Objects.AVLTree;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import lombok.Data;
 
 /**
+ * This is the master class, used to validate actions from an AVL tree
  *
  * @author jefemayoneso
  */
@@ -12,96 +11,52 @@ import lombok.Data;
 public class AVLTree<T> {
 
     private AVLNode<T> root;
+    private AVLTreeInserter<T> inserter;
+    private AVLTreePrinter<T> printer;
 
     public AVLTree() {
         this.root = null;
     }
 
     /**
-     * Search a node into an AVL tree
+     * Search for a node, using the value and return all node
      *
-     * @param data
-     * @param value
-     * @param toFind
+     * @param value the value to find, this is the node ID, cannot repeat
+     * @param node the current node to read and find data
      * @return
      */
-    public AVLNode<T> search(T data, int value, AVLNode<T> toFind) {
-        if (toFind == null) {
+    public AVLNode<T> search(int value, AVLNode<T> node) {
+        if (root == null) {
             return null;
-        } else if (toFind.getValue() == value) { // TODO create method to find by data
-            return toFind;
-        } else if (toFind.getValue() < value) {
-            return search(data, value, toFind.getRightChild());
+        } else if (node.getValue() == value) {
+            return node;
+        } else if (node.getValue() < value) {
+            return search(value, node.getRightChild());
         } else {
-            return search(data, value, toFind.getLeftChild());
+            return search(value, node.getRightChild());
         }
     }
 
-    /**
-     * Flip values from a tree to balance a tree
-     *
-     * @param node
-     * @param flipType
-     * @return
-     */
-    public AVLNode<T> flip(AVLNode<T> node, int flipType) {
-        AVLTreeFlipper<T> flipper = new AVLTreeFlipper<>();
-        switch (flipType) {
-            case 1:
-                return flipper.flipLeft(node);
-            case 2:
-                return flipper.flipRight(node);
-            case 3:
-                return flipper.doubleFlipLeft(node);
-            default:
-                return flipper.doubleFlipRight(node);
-        }
-    }
-
-    /**
-     * Insert a node into an AVL tree
-     */
     public void insert(int value, T data) {
-        AVLNode<T> newNode = new AVLNode<>(data, value);
+        AVLNode<T> newNode = new AVLNode<>(value, data);
         if (this.root == null) {
             this.root = newNode;
         } else {
-            this.root = new AVLTreeInserter<T>().insert(newNode, this.root);
+            this.root = this.inserter.insertAVL(newNode, root);
         }
     }
 
-    public String print(int type) {
-        String result = "";
-        ArrayList<String> data = new ArrayList<>();
-        AVLTreePrinter<T> printer = new AVLTreePrinter<>();
-        switch (type) {
-            case 1:
-                printer.inOrder(this.root, data);
-            case 2:
-                printer.preOrder(this.root, data);
-            default:
-                printer.preOrder(this.root, data);
-        }
-        // check array and remove nulls
-        data.removeAll(Collections.singleton(null));
-        if (!data.isEmpty()) {
-            System.out.println("SIZE: " + data.size());
-            result = data.stream().map(line -> "<br>" + line).reduce(result, String::concat);
-        }
-        return result;
+    public String getPrint(int type) {
+        this.printer.getData(type, this.root);
+        return "hola";
     }
 
     /**
-     * get the Equilibrium factor of a tree
+     * CHeck if a tree is empty
      *
-     * @param node
      * @return
      */
-    public int getEF(AVLNode<T> node) {
-        if (node == null) {
-            return -1;
-        } else {
-            return node.getEquilibriumFactor();
-        }
+    public boolean isEmpty() {
+        return root == null;
     }
 }

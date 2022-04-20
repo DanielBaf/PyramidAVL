@@ -1,6 +1,6 @@
 package Application.Web.Actions;
 
-import Application.Objects.AVLTree.AVLTree;
+import Application.Objects.AVLTree.AVLTreeB;
 import Application.Objects.Cards.CardType;
 import Application.Objects.Cards.PokerCard;
 
@@ -18,13 +18,14 @@ public class GameStarter {
         PokerCard c4 = new PokerCard("K♠", 13, CardType.SPADES);
         PokerCard c5 = new PokerCard("2♣", 2, CardType.CLUBS);
         // create tree
-        AVLTree<PokerCard> tree = new AVLTree<>();
-        tree.insert(1, c1);
+        AVLTreeB<PokerCard> tree = new AVLTreeB<>();
+        tree.insert(6, c1);
         tree.insert(2, c3);
         tree.insert(3, c4);
         tree.insert(4, c5);
         tree.insert(5, c2);
         // print
-        return tree.print(1);
+        tree.print();
+        return "a";
     }
 }
