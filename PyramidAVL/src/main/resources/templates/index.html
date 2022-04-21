@@ -12,9 +12,9 @@ and open the template in the editor.
     </head>
     <body>
         <form method="post" action="/Game/start" modelAttibute="String">
-            <label for="text">Texto</label>
+            <label for="text">START GAME</label>
             <br>
-            <textarea name="text" id="text" cols="56" rows="20">
+            <textarea name="text" id="text" cols="56" rows="15">
 {
   "0": "1♣","1": "2♣","2": "3♣","3": "4♣",
   "7": "8♣","8": "9♣","9": "10♣","10": "J♣",
@@ -26,7 +26,19 @@ and open the template in the editor.
   "31": "4♦","32": "Q♦","33": "K♦","34": "As♦",
   "35": "1♠","36": "5♦","37": "Q♥","38": "K♥",
   "39": "As♥","40": "6♦","41": "7♦","42": "8♦",
-  "43": "9♦","44": "10♦","45": "J♦","46": "2♠",
+  "43": "9♦","44": "10♦","45": "J♦","46": "2♠"
+}
+            </textarea>
+            <br>
+            <input type="submit" value="Start Game">
+        </form>
+        
+        <br>
+        <form method="post" action="/Game/add" modelAttibute="String">
+            <label for="text">ADD TO TREE</label>
+            <br>
+            <textarea name="text" id="text" cols="56" rows="15">
+{
   "47": "3♠","48": "4♠","49": "5♠","50": "6♠",
   "51": "7♠","52": "8♠","53": "9♠","54": "10♠",
   "55": "J♠","56": "Q♠","57": "K♠","58": "As♠"

@@ -1,11 +1,13 @@
 Application/Objects/AVLTree/AVLTree.class
 Application/Web/Testing.class
 Application/Objects/Cards/PokerCard.class
+Application/Web/Actions/GameActioner.class
+Application/Utilities/FileManager.class
 Application/Web/Game.class
 Application/Objects/AVLTree/AVLNode.class
+Application/Utilities/Graphics/GraphvizGen.class
 Application/Objects/AVLTree/AVLTreePrinter.class
 Application/PyramidAvlApplication.class
 Application/Objects/AVLTree/AVLTreeFlipper.class
-Application/Web/Actions/GameStarter.class
 Application/Objects/AVLTree/AVLTreeInserter.class
 Application/Objects/Cards/CardType.class

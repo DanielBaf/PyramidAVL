@@ -15,26 +15,23 @@ public class AVLTreePrinter<T> {
      * @param root where to start printing
      * @return
      */
-    public String print(int type, AVLNode<T> root) {
+    public String getData(int type, AVLNode<T> root) {
         ArrayList<String> lines = new ArrayList<>();
         String result = "";
         try {
 
             switch (type) {
                 case 0:
-                    lines.add("<br> ---- INORDERD ----");
                     inOrden(root, lines);
                     break;
                 case 1:
-                    lines.add("<br>---- PREORDER ----");
                     preorden(root, lines);
                     break;
                 default:
-                    lines.add("<br>---- POSTORDER ----");
                     postOrden(root, lines);
             }
             // merge array result
-            result = lines.stream().map(line -> "<br>" + line).reduce(result, String::concat);
+            result = lines.stream().map(line -> line + "\n").reduce(result, String::concat);
         } catch (Exception e) {
             System.out.println("ERROR printing tree: " + e.getMessage());
         }
@@ -49,7 +46,7 @@ public class AVLTreePrinter<T> {
     private void inOrden(AVLNode<T> current, ArrayList<String> lines) {
         if (current != null) {
             inOrden(current.getLeftChild(), lines);
-            lines.add("NODE:<br>   Index=" + current.getValue() + " ef=" + current.getEf() + "   data=" + current.getData().toString() + "<br>   children=[<br>   " + current.getLeftChild() + "<br>   " + current.getRightChild() + " ]<br><br>");
+            lines.add(String.format("\"%1$s\": \"%2$s\",", lines.size(), current.getData().toString()));
             inOrden(current.getRightChild(), lines);
         }
     }
@@ -61,7 +58,7 @@ public class AVLTreePrinter<T> {
      */
     private void preorden(AVLNode<T> current, ArrayList<String> lines) {
         if (current != null) {
-            lines.add("NODE:<br>   Index=" + current.getValue() + " ef=" + current.getEf() + "   data=" + current.getData().toString() + "<br>   children=[<br>   " + current.getLeftChild() + "<br>   " + current.getRightChild() + " ]<br><br>");
+            lines.add(String.format("\"%1$s\": \"%2$s\",", lines.size(), current.getData().toString()));
             preorden(current.getLeftChild(), lines);
             preorden(current.getRightChild(), lines);
         }
@@ -76,7 +73,7 @@ public class AVLTreePrinter<T> {
         if (current != null) {
             postOrden(current.getLeftChild(), lines);
             postOrden(current.getRightChild(), lines);
-            lines.add("NODE:<br>   Index=" + current.getValue() + " ef=" + current.getEf() + "   data=" + current.getData().toString() + "<br>   children=[<br>   " + current.getLeftChild() + "<br>   " + current.getRightChild() + " ]<br><br>");
+            lines.add(String.format("\"%1$s\": \"%2$s\",", lines.size(), current.getData().toString()));
         }
     }
 

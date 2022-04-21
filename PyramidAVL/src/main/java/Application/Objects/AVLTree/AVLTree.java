@@ -44,7 +44,6 @@ public class AVLTree<T> {
         if (this.root != null && node != null) {
             // check same
             if (node.getData().equals(data)) {
-                System.out.println("DATA FOUND");
                 return node;
             } else {
                 // recursive call
@@ -90,9 +89,9 @@ public class AVLTree<T> {
      * @param type
      * @return
      */
-    public String print(int type) {
+    public String getAvlTree(int type) {
         AVLTreePrinter<T> printer = new AVLTreePrinter<>();
-        return printer.print(type, this.root);
+        return printer.getData(type, this.root);
     }
 
 }

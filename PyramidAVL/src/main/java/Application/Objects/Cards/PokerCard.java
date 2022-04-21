@@ -20,4 +20,9 @@ public class PokerCard {
         this.type = type;
     }
 
+    @Override
+    public String toString() {
+        return this.text;
+    }
+
 }

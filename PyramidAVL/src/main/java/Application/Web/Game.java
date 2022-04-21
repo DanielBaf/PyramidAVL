@@ -1,6 +1,8 @@
 package Application.Web;
 
-import Application.Web.Actions.GameStarter;
+import Application.Objects.AVLTree.AVLTree;
+import Application.Objects.Cards.PokerCard;
+import Application.Web.Actions.GameActioner;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,13 +18,19 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class Game {
 
+    AVLTree<PokerCard> game;
+
+    public Game() {
+        this.game = null;
+    }
+
     @RequestMapping(value = "/Game/start", method = RequestMethod.POST)
-    public String start(String text) {
-        log.info("Starting game...");
-        // create object and return result
-        GameStarter game = new GameStarter();
-        //return text + "\n\n" + game.create();
-        return game.create();
+    public String start(String json) {
+        log.info("Starting game... " + json);
+        // create AVLTree
+        this.game = new GameActioner().createGame();
+        // check tree and send response
+        return "Game saved<br>Tree:<br>" + this.game.getAvlTree(2);
     }
 
     @GetMapping("/Game/add")
