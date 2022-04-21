@@ -1,5 +1,4 @@
 Application/Objects/AVLTree/AVLTree.class
-Application/Web/Testing.class
 Application/Objects/Cards/PokerCard.class
 Application/Web/Actions/GameActioner.class
 Application/Utilities/FileManager.class
@@ -11,3 +10,4 @@ Application/PyramidAvlApplication.class
 Application/Objects/AVLTree/AVLTreeFlipper.class
 Application/Objects/AVLTree/AVLTreeInserter.class
 Application/Objects/Cards/CardType.class
+Application/JSON/JsonReader.class

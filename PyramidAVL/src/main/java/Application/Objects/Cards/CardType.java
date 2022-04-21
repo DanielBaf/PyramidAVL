@@ -8,8 +8,9 @@ public enum CardType {
     CLUBS("♣"), // ♣
     DIAMONDS("♦"), // ♦
     HEARTS("♥"), // ♥
-    SPADES("♠"); // ♠
-
+    SPADES("♠"), // ♠
+    INVALID("");
+    
     private final String icon;
 
     private CardType(String icon) {

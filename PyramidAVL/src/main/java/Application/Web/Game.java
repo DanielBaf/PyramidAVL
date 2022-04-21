@@ -26,11 +26,11 @@ public class Game {
 
     @RequestMapping(value = "/Game/start", method = RequestMethod.POST)
     public String start(String json) {
-        log.info("Starting game... " + json);
+        log.info("Starting game... ");
         // create AVLTree
-        this.game = new GameActioner().createGame();
+        this.game = new GameActioner().createGame(json);
         // check tree and send response
-        return "Game saved<br>Tree:<br>" + this.game.getAvlTree(2);
+        return "Game saved...\n" + this.game.getAvlTree(1);
     }
 
     @GetMapping("/Game/add")
