@@ -34,7 +34,7 @@ public class GameStarter {
     private PokerCard createCard(String value, CardType cardType) {
         try {
             PokerCard card;
-            int val = -1;
+            int val;
             // calc value of card
             switch (value) {
                 case "K":
