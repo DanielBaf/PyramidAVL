@@ -101,7 +101,7 @@ public class GameActioner {
             card = new PokerCard(value.toUpperCase() + cardType.getIcon(), val, cardType);
             return card;
         } else {
-            throw new ApiRequestException("El valor de la carte debe estar en el rango [1,10] o {J,Q,K}", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ApiRequestException("El valor de la carte debe estar en el rango [1,10] o {J,Q,K}", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -125,7 +125,7 @@ public class GameActioner {
                 return CardType.INVALID;
             }
         } catch (Exception e) {
-            throw new ApiRequestException("Tipo de carta invalido: " + icon, HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ApiRequestException("Tipo de carta invalido: " + icon, HttpStatus.BAD_REQUEST);
         }
     }
 }

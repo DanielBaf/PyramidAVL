@@ -5,45 +5,72 @@
  */
 package Application.Utilities.Graphics;
 
+import Application.Objects.AVLTree.AVLNode;
 import Application.Utilities.FileManager;
-import guru.nidi.graphviz.attribute.Color;
-import guru.nidi.graphviz.attribute.Style;
+import Application.Web.Exceptions.ApiRequestException;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
-import guru.nidi.graphviz.model.MutableGraph;
-import guru.nidi.graphviz.parse.Parser;
 
 import java.io.File;
-import java.io.InputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import org.springframework.http.HttpStatus;
 
 /**
  *
  * @author jefemayoneso
  */
-public class GraphvizGen {
+public class GraphvizGen<T> {
 
-    public void testGraph() {
-        FileManager fm = new FileManager();
-        fm.setup();
-
-        // color path = src/main/resources/static/graphvizData/color.dot
-        try (InputStream dot = getClass().getResourceAsStream("/static/graphvizData/color.dot")) {
-            MutableGraph g = new Parser().read(dot);
-            Graphviz.fromGraph(g).width(1500).render(Format.PNG).toFile(new File(FileManager.getGRAPHS_DIR() + "/graph.png"));
-
-            g.graphAttrs()
-                    .add(Color.WHITE.gradient(Color.rgb("888888")).background().angle(90))
-                    .nodeAttrs().add(Color.WHITE.fill())
-                    .nodes().forEach(node
-                            -> node.add(
-                            Color.named(node.name().toString()),
-                            Style.lineWidth(4), Style.FILLED));
-            Graphviz.fromGraph(g).width(700).render(Format.PNG).toFile(new File(FileManager.getGRAPHS_DIR() + "/graph.png"));
-        } catch (Exception e) {
-            System.out.println("Error creating graph: " + e.getMessage());
+    /**
+     * Generate an .png image into a relative path
+     *
+     * @param root the root node of an existing AVL Tree
+     */
+    public void getDotFileFromTree(AVLNode<T> root) {
+        try {
+            // data
+            String header = "digraph G {\n";
+            ArrayList<String> nodesDec = new ArrayList<>();
+            ArrayList<String> nodesPointers = new ArrayList<>();
+            FileManager fm = new FileManager();
+            File fileGraph = new File(FileManager.getGRAPHS_DIR() + "/graph.png");
+            fm.setup();
+            // update middle data
+            graphFromTree(root, nodesDec, nodesPointers);
+            // gen final String
+            header = nodesDec.stream().map(string -> "\t" + string + "\n").reduce(header, String::concat);
+            header = nodesPointers.stream().map(string -> "\t" + string + "\n").reduce(header, String::concat);
+            header += "}";
+            // create graph
+            Graphviz.fromString(header).render(Format.PNG).toFile(fileGraph);
+            throw new ApiRequestException(fileGraph.getAbsolutePath(), HttpStatus.OK);
+        } catch (IOException ex) {
+            throw new ApiRequestException("Error creando grafico " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public void customGraph() {
+    /**
+     * Generate a temporal .dot file text, used later to compile a file
+     *
+     * @param current current node, re cursive calls
+     * @param nodesDec nodes section, ex nodeN [label="label"];
+     * @param nodesPointers nodes pointer section, ex nodeN -> nodeN2;
+     */
+    private void graphFromTree(AVLNode<T> current, ArrayList<String> nodesDec, ArrayList<String> nodesPointers) {
+        // check current is not null
+        if (current != null) {
+            nodesDec.add(String.format("node%1$x [label=\"%2$s\"];", current.getValue(), current.getData())); // add node to list
+            // add node pointers, only when children aren't null
+            if (current.getLeftChild() != null) {
+                nodesPointers.add(String.format("node%1$x -> node%2$x", current.getValue(), current.getLeftChild().getValue()));
+            }
+            if (current.getRightChild() != null) {
+                nodesPointers.add(String.format("node%1$x -> node%2$x", current.getValue(), current.getRightChild().getValue()));
+            }
+            // recursively call
+            graphFromTree(current.getLeftChild(), nodesDec, nodesPointers);
+            graphFromTree(current.getRightChild(), nodesDec, nodesPointers);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package Application.Web;
 
+import Application.Utilities.Graphics.GraphvizGen;
 import Application.Web.Actions.GameActioner;
 import Application.Web.Exceptions.ApiRequestException;
 import lombok.extern.slf4j.Slf4j;
@@ -39,16 +40,18 @@ public class Game {
         this.actioner.insertCard(json);
     }
 
-    @GetMapping("/Game/delete")
-    public String delete() {
+    @RequestMapping(value = "/Game/delete", method = RequestMethod.DELETE)
+    public String delete(String json) {
         log.info("deleting from tree");
-        return "delete";
+        // print delete
+        return "delete..." + json;
     }
 
     @GetMapping("/Game/status-avltree")
-    public String getStatus() {
+    public void getStatus() {
         log.info("getting AVL tree info");
-        return "get avl";
+        GraphvizGen graphicGen = new GraphvizGen();
+        graphicGen.getDotFileFromTree(this.actioner.getGameTree().getRoot());
     }
 
     @GetMapping("Game/get-level")
