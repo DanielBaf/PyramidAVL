@@ -5,7 +5,9 @@
  */
 package Application.Objects.AVLTree;
 
+import Application.Web.Exceptions.ApiRequestException;
 import lombok.Data;
+import org.springframework.http.HttpStatus;
 
 /**
  *
@@ -14,10 +16,12 @@ import lombok.Data;
 @Data
 public class AVLTree<T> {
 
-    AVLNode<T> root;
+    private AVLNode<T> root;
+    private int highestItem;
 
     public AVLTree() {
         this.root = null;
+        this.highestItem = 0;
     }
 
     /**
@@ -69,6 +73,8 @@ public class AVLTree<T> {
         AVLTreeInserter<T> inserter = new AVLTreeInserter<>();
         AVLNode<T> toInsert = new AVLNode<>(value, data);
         this.root = inserter.insert(toInsert, this.root);
+        // check highest val to insert
+        this.highestItem = value > this.highestItem ? value : this.highestItem;
     }
 
     /**
@@ -80,6 +86,8 @@ public class AVLTree<T> {
     public void insertCheckDataRepeated(int value, T data) {
         if (searchByData(data, this.root) == null) {
             insert(value, data);
+        } else {
+            throw new ApiRequestException("La carta " + data + " ya ha sido insertada ", HttpStatus.NOT_ACCEPTABLE);
         }
     }
 

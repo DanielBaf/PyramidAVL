@@ -1,9 +1,9 @@
 package Application.Web;
 
-import Application.Objects.AVLTree.AVLTree;
-import Application.Objects.Cards.PokerCard;
 import Application.Web.Actions.GameActioner;
+import Application.Web.Exceptions.ApiRequestException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,25 +18,25 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class Game {
 
-    AVLTree<PokerCard> game;
+    GameActioner actioner;
 
     public Game() {
-        this.game = null;
+        this.actioner = new GameActioner();
     }
 
     @RequestMapping(value = "/Game/start", method = RequestMethod.POST)
-    public String start(String json) {
+    public void start(String json) {
         log.info("Starting game... ");
-        // create AVLTree
-        this.game = new GameActioner().createGame(json);
-        // check tree and send response
-        return "Game saved...\n" + this.game.getAvlTree(1);
+        // create AVLTree and restart game object
+        this.actioner = new GameActioner();
+        this.actioner.createGame(json); // method throws a response status
     }
 
-    @GetMapping("/Game/add")
-    public String add() {
+    @RequestMapping(value = "/Game/add", method = RequestMethod.POST)
+    public void add(String json) {
         log.info("adding to tree");
-        return "add";
+        // check tree isn't null
+        this.actioner.insertCard(json);
     }
 
     @GetMapping("/Game/delete")
@@ -56,4 +56,20 @@ public class Game {
         log.info("getting level data, at: " + level);
         return "get level";
     }
+
+    @RequestMapping(value = "/Game/avltree", method = RequestMethod.GET)
+    public String getAvlTree(String transversal) {
+        switch (transversal.toLowerCase()) {
+            case "inorder":
+                return String.format("{\n%1$s}", this.actioner.getGameTree().getAvlTree(0));
+            case "preorder":
+                return String.format("{\n%1$s}", this.actioner.getGameTree().getAvlTree(1));
+            case "postorder":
+                return String.format("{\n%1$s}", this.actioner.getGameTree().getAvlTree(2));
+            default:
+                throw new ApiRequestException("Solicitud " + transversal + " no reconocdia", HttpStatus.NOT_ACCEPTABLE);
+
+        }
+    }
+
 }

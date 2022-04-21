@@ -8,6 +8,10 @@ Application/Utilities/Graphics/GraphvizGen.class
 Application/Objects/AVLTree/AVLTreePrinter.class
 Application/PyramidAvlApplication.class
 Application/Objects/AVLTree/AVLTreeFlipper.class
+Application/Web/Exceptions/ApiRequestException.class
+Application/Web/Exceptions/ApiException.class
 Application/Objects/AVLTree/AVLTreeInserter.class
+Application/Web/Exceptions/ApiExceptionHandler.class
+Application/Web/Actions/ErrorResponse.class
 Application/Objects/Cards/CardType.class
 Application/JSON/JsonReader.class

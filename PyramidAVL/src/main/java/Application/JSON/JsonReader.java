@@ -5,11 +5,13 @@
  */
 package Application.JSON;
 
+import Application.Web.Exceptions.ApiRequestException;
 import java.util.HashMap;
 import java.util.Iterator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
 
 /**
  *
@@ -51,6 +53,7 @@ public class JsonReader {
             }
         } catch (JSONException ex) {
             System.out.println("Error reading JSON: " + ex.getMessage());
+            throw new ApiRequestException("Error leyendo el JSON, revisa las llaves", HttpStatus.NOT_ACCEPTABLE);
         }
 
         return hash;

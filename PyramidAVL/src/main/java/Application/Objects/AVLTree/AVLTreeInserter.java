@@ -1,5 +1,8 @@
 package Application.Objects.AVLTree;
 
+import Application.Web.Exceptions.ApiRequestException;
+import org.springframework.http.HttpStatus;
+
 /**
  *
  * @author jefemayoneso
@@ -40,7 +43,7 @@ public class AVLTreeInserter<T> {
         } else if (newNode.getValue() > subTree.getValue()) {
             newParent = checkRightInsert(subTree, newNode, newParent);
         } else {
-            System.out.println("Error, node already exists");
+            throw new ApiRequestException("La carta " + newNode.getData() + " ya ha sido insertada ", HttpStatus.NOT_ACCEPTABLE);
         }
         // update EF
         updateEF(subTree);
