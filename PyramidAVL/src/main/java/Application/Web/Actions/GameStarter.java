@@ -1,5 +1,6 @@
 package Application.Web.Actions;
 
+import Application.Objects.AVLTree.AVLNode;
 import Application.Objects.AVLTree.AVLTree;
 import Application.Objects.Cards.CardType;
 import Application.Objects.Cards.PokerCard;
@@ -13,14 +14,46 @@ public class GameStarter {
     public String create() {
         // create tree
         AVLTree<PokerCard> tree = new AVLTree<>();
-        tree.insert(2, new PokerCard("J♥", 11, CardType.HEARTS));
-        tree.insert(3, new PokerCard("K♠", 13, CardType.SPADES));
-        tree.insert(4, new PokerCard("2♣", 2, CardType.CLUBS));
-        tree.insert(5, new PokerCard("7♦", 7, CardType.DIAMONDS));
-        tree.insert(0, new PokerCard("4♣", 4, CardType.SPADES));
-        tree.insert(1, new PokerCard("10♣", 10, CardType.CLUBS));
-        tree.insert(6, new PokerCard("1♦", 1, CardType.SPADES));
+        tree.insertCheckDataRepeated(2, createCard("J", CardType.HEARTS));
+        tree.insertCheckDataRepeated(3, createCard("K", CardType.SPADES));
+        tree.insertCheckDataRepeated(4, createCard("2", CardType.CLUBS));
+        tree.insertCheckDataRepeated(5, createCard("7", CardType.DIAMONDS));
+        tree.insertCheckDataRepeated(0, createCard("4", CardType.SPADES));
+        tree.insertCheckDataRepeated(1, createCard("10", CardType.CLUBS));
+        tree.insertCheckDataRepeated(6, createCard("1", CardType.SPADES));
         // print
+        // find type
+        AVLNode<PokerCard> card = tree.search(6, tree.getRoot());
+        System.out.println("FOUND BY ID: " + card);
+        card = tree.searchByData(createCard("10", CardType.CLUBS), tree.getRoot());
+        System.out.println("FOUND BY DATA: " + card);
+        // System.out.println("FOUND by DATA: " + card.getData());
         return tree.print(0) + tree.print(1) + tree.print(2);
+    }
+
+    private PokerCard createCard(String value, CardType cardType) {
+        try {
+            PokerCard card;
+            int val = -1;
+            // calc value of card
+            switch (value) {
+                case "K":
+                    val = 13;
+                    break;
+                case "Q":
+                    val = 12;
+                    break;
+                case "J":
+                    val = 11;
+                    break;
+                default: // integer
+                    val = Integer.valueOf(value.trim());
+            }
+            card = new PokerCard(value + cardType.getIcon(), val, cardType);
+            return card;
+        } catch (NumberFormatException e) {
+            System.out.println("Unable to create card with val: " + value + "... " + e.getMessage());
+            return null;
+        }
     }
 }

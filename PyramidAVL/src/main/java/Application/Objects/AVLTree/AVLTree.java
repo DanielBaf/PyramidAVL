@@ -28,23 +28,68 @@ public class AVLTree<T> {
      * @return
      */
     public AVLNode<T> search(int value, AVLNode<T> node) {
-        if (this.root == null) {
+        // check find or nulls
+        if (this.root == null || node == null) {
             return null;
-        } else if (node.getValue() == value) {
+        } else if (node.getValue() == value) { // search when finding by data is false, use ID insted
             return node;
-        } else if (node.getValue() < value) {
+        } else if (node.getValue() < value) { // recursively
             return search(value, node.getRightChild());
         } else {
             return search(value, node.getLeftChild());
         }
     }
 
+    public AVLNode<T> searchByData(T data, AVLNode<T> node) {
+        if (this.root != null && node != null) {
+            // check same
+            if (node.getData().equals(data)) {
+                System.out.println("DATA FOUND");
+                return node;
+            } else {
+                // recursive call
+                AVLNode<T> temp = searchByData(data, node.getLeftChild());
+                if (temp != null) {
+                    return temp;
+                } else {
+                    return searchByData(data, node.getRightChild());
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Insert a new node
+     *
+     * @param value
+     * @param data
+     */
     public void insert(int value, T data) {
+        // check data is not declared previously
         AVLTreeInserter<T> inserter = new AVLTreeInserter<>();
         AVLNode<T> toInsert = new AVLNode<>(value, data);
         this.root = inserter.insert(toInsert, this.root);
     }
 
+    /**
+     * Insert a new node, but check if a OBject is previously repeated
+     *
+     * @param value
+     * @param data
+     */
+    public void insertCheckDataRepeated(int value, T data) {
+        if (searchByData(data, this.root) == null) {
+            insert(value, data);
+        }
+    }
+
+    /**
+     * Return a String with all the info of the tree
+     *
+     * @param type
+     * @return
+     */
     public String print(int type) {
         AVLTreePrinter<T> printer = new AVLTreePrinter<>();
         return printer.print(type, this.root);
