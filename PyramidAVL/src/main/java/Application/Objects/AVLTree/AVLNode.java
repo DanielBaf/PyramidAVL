@@ -10,9 +10,9 @@ import lombok.Data;
 @Data
 public class AVLNode<T> {
 
-    int value, ef;
-    T data;
-    AVLNode<T> leftChild, rightChild;
+    private int value, ef;
+    private T data;
+    private AVLNode<T> leftChild, rightChild;
 
     public AVLNode(int value, T data) {
         this.value = value;

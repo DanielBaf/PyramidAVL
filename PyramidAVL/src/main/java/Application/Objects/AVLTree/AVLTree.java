@@ -6,6 +6,7 @@
 package Application.Objects.AVLTree;
 
 import Application.Web.Exceptions.ApiRequestException;
+import java.util.ArrayList;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 
@@ -102,4 +103,35 @@ public class AVLTree<T> {
         return printer.getData(type, this.root);
     }
 
+    /**
+     * Search for all nodes into a specific level
+     *
+     * @param current
+     * @return
+     */
+    public void getNodesAtLevel(AVLNode<T> current, int currentLevel, int levelMatch, ArrayList<String> lines) {
+        // keep reading while current is not null
+        if (current != null && !(currentLevel > levelMatch)) {
+            if (currentLevel == levelMatch) {
+                lines.add(String.format("\t\"%1$x\": \"%2$s\",", lines.size(), current.getData().toString()));
+            } else {
+                currentLevel++;
+                getNodesAtLevel(current.getLeftChild(), currentLevel, levelMatch, lines);
+                getNodesAtLevel(current.getRightChild(), currentLevel, levelMatch, lines);
+            }
+        }
+    }
+
+    public void delete(AVLNode<T>... toDelete) {
+        AVLTreeRemover<T> remover = new AVLTreeRemover<>();
+        for (AVLNode<T> aVLNode : toDelete) {
+            try {
+                if (aVLNode != null) {
+                    remover.remove(aVLNode, this.root);
+                }
+            } catch (Exception e) {
+                System.out.println("Exception removing node: " + e.getMessage());
+            }
+        }
+    }
 }

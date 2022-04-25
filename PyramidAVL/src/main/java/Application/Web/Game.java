@@ -41,10 +41,10 @@ public class Game {
     }
 
     @RequestMapping(value = "/Game/delete", method = RequestMethod.DELETE)
-    public String delete(String json) {
+    public void delete(String json) {
         log.info("deleting from tree");
         // print delete
-        return "delete..." + json;
+        this.actioner.deleteNodes(json);
     }
 
     @GetMapping("/Game/status-avltree")
@@ -57,7 +57,7 @@ public class Game {
     @GetMapping("Game/get-level")
     public String getLevel(@RequestParam(name = "level") int level) {
         log.info("getting level data, at: " + level);
-        return "get level";
+        return this.actioner.getNodesAtLevel(level);
     }
 
     @RequestMapping(value = "/Game/avltree", method = RequestMethod.GET)
