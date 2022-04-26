@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.jefemayoneso.gt</groupId>
     <artifactId>PyramidAVL</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.4.2hw</version>
     <name>PyramidAVL</name>
     <description>Project, use AVL tree to manage a shard group</description>
     <properties>
@@ -84,7 +84,21 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <plugin>
+                <!-- Build an executable JAR -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>Application.PyramidAvlApplication</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
 </project>

@@ -18,11 +18,9 @@ import org.springframework.http.HttpStatus;
 public class AVLTree<T> {
 
     private AVLNode<T> root;
-    private int highestItem;
 
     public AVLTree() {
         this.root = null;
-        this.highestItem = 0;
     }
 
     /**
@@ -74,8 +72,6 @@ public class AVLTree<T> {
         AVLTreeInserter<T> inserter = new AVLTreeInserter<>();
         AVLNode<T> toInsert = new AVLNode<>(value, data);
         this.root = inserter.insert(toInsert, this.root);
-        // check highest val to insert
-        this.highestItem = value > this.highestItem ? value : this.highestItem;
     }
 
     /**

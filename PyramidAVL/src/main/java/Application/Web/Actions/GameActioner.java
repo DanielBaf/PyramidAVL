@@ -40,10 +40,10 @@ public class GameActioner {
         nodes.keySet().forEach(name -> {
             try {
                 String value = nodes.get(name);
-                this.gameTree.insertCheckDataRepeated(Integer.valueOf(name),
-                        cardGenerator.createCard(
-                                value.substring(0, value.length() - 1), cardGenerator.getTypeFromString(value.substring(value.length() - 1,
-                                value.length()))));
+                PokerCard card = cardGenerator.createCard(
+                        value.substring(0, value.length() - 1), cardGenerator.getTypeFromString(value.substring(value.length() - 1,
+                        value.length())));
+                this.gameTree.insertCheckDataRepeated(card.getValue() + card.getType().getDisplacement(), card);
             } catch (NumberFormatException e) {
                 throw new ApiRequestException("Valor invalido en JSON, llave=" + name + " valor=" + nodes.get(name), HttpStatus.BAD_REQUEST); // status 400
             }
@@ -66,9 +66,10 @@ public class GameActioner {
             try {
                 // get data
                 String value = data.get(name);
-                this.gameTree.insertCheckDataRepeated(this.gameTree.getHighestItem() + 1, cardGenerator.createCard(
+                PokerCard card = cardGenerator.createCard(
                         value.substring(0, value.length() - 1), cardGenerator.getTypeFromString(value.substring(value.length() - 1,
-                        value.length()))));
+                        value.length())));
+                this.gameTree.insertCheckDataRepeated(card.getValue() + card.getType().getDisplacement(), card);
             } catch (ApiRequestException ex) {
                 throw ex;
             } catch (Exception e) {
