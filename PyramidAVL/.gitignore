@@ -2,9 +2,9 @@
 *.class
 
 # generated files
-bin/
-gen/
-target/
+/bin/
+/gen/
+
 
 # Local configuration file
 local.properties
@@ -54,14 +54,15 @@ local.properties
 .idea/
 
 # NetBeans specific
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-nbactions.xml
-nb-configuration.xml
-
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/nbactions.xml
+/nb-configuration.xml
+/target/
+/tmp/
 # Maven 
 
 # OS
