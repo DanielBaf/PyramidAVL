@@ -4,7 +4,8 @@
 # generated files
 bin/
 gen/
-**/.target/
+**/target/
+**/target/**/**
 
 # Local configuration file
 local.properties
