@@ -28,6 +28,9 @@ public class CardGenerator {
         int val;
         // calc value of card
         switch (value.toLowerCase()) {
+            case "a":
+                val = 1;
+                break;
             case "k":
                 val = 13;
                 break;
