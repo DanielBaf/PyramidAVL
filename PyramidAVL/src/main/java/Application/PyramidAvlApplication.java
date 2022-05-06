@@ -9,5 +9,4 @@ public class PyramidAvlApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PyramidAvlApplication.class, args);
 	}
-
 }

@@ -27,7 +27,7 @@ public class GraphvizGen<T> {
      *
      * @param root the root node of an existing AVL Tree
      */
-    public void getDotFileFromTree(AVLNode<T> root) {
+    public String getDotFileFromTree(AVLNode<T> root) {
         try {
             // data
             String header = "digraph G {\n";
