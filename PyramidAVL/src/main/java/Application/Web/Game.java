@@ -48,10 +48,11 @@ public class Game {
     }
 
     @GetMapping("/Game/status-avltree")
-    public void getStatus() {
+    public String getStatus() {
         log.info("getting AVL tree info");
         GraphvizGen graphicGen = new GraphvizGen();
-        graphicGen.getDotFileFromTree(this.actioner.getGameTree().getRoot());
+        String path = graphicGen.getDotFileFromTree(this.actioner.getGameTree().getRoot());
+        return String.format("{\n\tpath:\"%1$s\"\n}", path);
     }
 
     @GetMapping("Game/get-level")

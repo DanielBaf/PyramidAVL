@@ -44,7 +44,7 @@ public class GraphvizGen<T> {
             header += "}";
             // create graph
             Graphviz.fromString(header).render(Format.PNG).toFile(fileGraph);
-            throw new ApiRequestException(fileGraph.getAbsolutePath(), HttpStatus.OK);
+            return fileGraph.getAbsolutePath();
         } catch (IOException ex) {
             throw new ApiRequestException("Error creando grafico " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
