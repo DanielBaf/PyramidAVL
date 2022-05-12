@@ -31,6 +31,7 @@ public class JsonReader {
         try {
             // a JSON contains [ {... list ...} ], we receive just list, so need to be casted
             json = String.format("[%1$s]", json);
+            System.out.println("JSON: " + json);            
             JSONArray jsonArray = new JSONArray(json); // get array list
             int length = jsonArray.length();
 

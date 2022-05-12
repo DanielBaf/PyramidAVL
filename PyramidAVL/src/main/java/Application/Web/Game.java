@@ -6,6 +6,7 @@ import Application.Web.Exceptions.ApiRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +27,8 @@ public class Game {
     }
 
     @RequestMapping(value = "/Game/start", method = RequestMethod.POST)
-    public void start(String json) {
+    public void start(@RequestBody String json) {
+        log.info(json);
         log.info("Starting game... ");
         // create AVLTree and restart game object
         this.actioner = new GameActioner();
@@ -34,14 +36,14 @@ public class Game {
     }
 
     @RequestMapping(value = "/Game/add", method = RequestMethod.POST)
-    public void add(String json) {
+    public void add(@RequestBody String json) {
         log.info("adding to tree");
         // check tree isn't null
         this.actioner.insertCard(json);
     }
 
     @RequestMapping(value = "/Game/delete", method = RequestMethod.DELETE)
-    public void delete(String json) {
+    public void delete(@RequestBody String json) {
         log.info("deleting from tree");
         // print delete
         this.actioner.deleteNodes(json);
